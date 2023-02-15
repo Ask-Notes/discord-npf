@@ -1,11 +1,12 @@
 import discord
-class kintama(): 
-    async def on_message(message):
+
+class Kintama(): 
+    def messager(message):
         channel = message.channel
         content = message.content
     
-        if channel.id == 983318451084984430:
+        if channel.id == 986992160719130654:
             if content == "金谷":
-                await channel.send("消えろｄさっだｄさだｓｄ")
-            
+                return "消えろｄさっだｄさだｓｄ"
+         
 

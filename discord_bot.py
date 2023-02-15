@@ -1,6 +1,7 @@
 import discord
+import pai
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.G_Rwx0.CZCN8OgXBda5xuiTormmilrpwbyFvHnoLo_GCM' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GJcBDe.L0W4ftSPG_PVwHkuuT5KneFHpWhEi8N7yc-_QE' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
@@ -104,7 +105,10 @@ async def on_message(message):
     print(message.author.id)
     channel = message.channel
     content = message.content
-    
+
+    if content == "金谷":
+       str = pai.Kintama.messager(message)
+       await channel.send(str)
     
     if channel.id == 986992160719130654:
         if content == "s//":
