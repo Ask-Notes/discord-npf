@@ -19,6 +19,7 @@ async def on_ready():
     print(guild.id)
     print(guild.name)
     print(guild.members)
+    
 
     
 # チャンネル入退室時の通知処理
