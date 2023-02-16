@@ -128,12 +128,16 @@ async def on_message(message):
     #吉田　　　　｜_____|_____|_____|_____|____|
     ###
 
+
+    def check(m):
+        return float(m.content) and m.channel == channel
+
     #　原神ダメージ計算処理-------------------------------------------------------------------------------------------------------------------
-    if content.find("c//") and channel.id == 986992160719130654:
+    if content.find("c//") and channel.id == 1075291090724323348:
         comand = content[idx+3:]  # スライスで半角空白文字のインデックス＋3以降を抽出
         if character[1] == comand:
             await channel.send("神里のダメージ計算を開始します")
-            await channel.send("神里の攻撃力を入力してください")
+            await channel.send("神里の攻撃力値を入力してください")
             Selection = 1
             menber = selectuser(user)
             usermap[menber][Selection] = True
@@ -149,16 +153,26 @@ async def on_message(message):
             usermap[menber][Selection] = True
     
     #　原神ダメージ計算引継ぎロジック---------------------------------------------------------------------------------
-    if content.find(1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9):
+    if content.find(1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9)&channel.id == 1075291090724323348:
         try:
-           float(content)
+           content = float(content)
            menber = selectuser
            for continer in count:
                if True == usermap[menber][continer]:
                    if continer == 1:
-                       continer
+                       attack = content
+                       await channel.send("会心率値を入力してください")
+                       ct = await client.wait_for('message', check=check)
+                       await channel.send("会心ダメ値を入力してください")
+                       ctd = await client.wait_for('message', check=check)
+                       await channel.send("元素バフ値を入力してください")
+                       elementDmg = await client.wait_for('message', check=check)
+                       dmg = pai.dmg.ayaka(attack, ct, ctd, elementDmg)
         except TypeError as e:
             print(e)
+            await channel.send(e)
+
+        await channel.send("予想されるダメージは"+dmg+"です")
             
 
 
