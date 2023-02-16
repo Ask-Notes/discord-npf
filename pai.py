@@ -7,11 +7,11 @@ class Kintama():
         content = message.content
 
         if channel.id == 986992160719130654:
-            return "消えろｄさっだｄさだｓｄ"
+            return "消えろ"
 
 
-class ayaka():
-    def messager(atk, ct, ctd, elementDmg):
+class dmg():
+    def ayaka(atk, ct, ctd, elementDmg):
         channel = atk.channel
         content = atk.content
         tenpu = 1.09
