@@ -23,7 +23,7 @@ async def on_ready():
     
 
     
-# チャンネル入退室時の通知処理
+# チャンネル入退室時の通知処理------------------------------------------------------------------------
 @client.event
 async def on_voice_state_update(member, before, after):
     
@@ -48,7 +48,7 @@ async def on_reaction_add(reaction, user):
     # 通知メッセージを書き込むテキストチャンネル（チャンネルIDを指定）
     botRoom = client.get_channel(983734676365668432)
     sabun = 0
-    #print(reaction.emoji.id)
+    #　承認機能絵文字処理------------------------------------------------------------------------
     msid = reaction.message.author.id
     if user.id != msid :
         if reaction.emoji.id == 977208213986476093:
@@ -100,17 +100,69 @@ async def on_reaction_add(reaction, user):
             if "ゆー者" in mscotent:
                 await botRoom.send("3人以上の承認が行われたので、"+reaction.message.author.nick+"を逮捕いたします。十分に反省してください。")
         
+def selectuser(user):
+   if 766190879127502858 == user:
+       return 1
+   elif 607448697827229706 == user:
+       return 2
+
+
 @client.event
 async def on_message(message):
     print(message.author.id)
     channel = message.channel
     content = message.content
+    user = message.author.id
+    Selection = 0
+    character = ["神里","宵宮","胡桃"]
+    usermap = [True,True,True],[True,True,True],[True,True,True],[True,True,True],[True,True,True],
+    menber = 0
+    count = 3
+    ###　二次元配列の定義はこんな感じ(usermap)
+    #             "神里","宵宮","胡桃"etc...... 
+    #             _____________________________            
+    #一宮　　　　｜_____|_____|_____|_____|____|
+    #植松　　　　｜_____|_____|_____|_____|____|
+    #金谷　　　　｜_____|_____|_____|_____|____|
+    #宇野ちゃん　｜_____|_____|_____|_____|____|
+    #吉田　　　　｜_____|_____|_____|_____|____|
+    ###
 
-    if content == "c//":
+    #　原神ダメージ計算処理-------------------------------------------------------------------------------------------------------------------
+    if content.find("c//") and channel.id == 986992160719130654:
         comand = content[idx+3:]  # スライスで半角空白文字のインデックス＋3以降を抽出
-        if channel.id == 986992160719130654:
-            character = ["神里","宵宮"]
+        if character[1] == comand:
+            await channel.send("神里のダメージ計算を開始します")
+            await channel.send("神里の攻撃力を入力してください")
+            Selection = 1
+            menber = selectuser(user)
+            usermap[menber][Selection] = True
+        elif character[2] == comand:
+            await channel.send("宵宮のダメージ計算を開始します")
+            Selection = 2
+            menber = selectuser(user)
+            usermap[menber][Selection] = True
+        elif character[3] == comand:
+            await channel.send("胡桃のダメージ計算を開始します")
+            Selection = 3
+            menber = selectuser(user)
+            usermap[menber][Selection] = True
+    
+    #　原神ダメージ計算引継ぎロジック---------------------------------------------------------------------------------
+    if content.find(1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9):
+        try:
+           float(content)
+           menber = selectuser
+           for continer in count:
+               if True == usermap[menber][continer]:
+                   if continer == 1:
+                       continer
+        except TypeError as e:
+            print(e)
+            
 
+
+    #　お試し金谷君
     if content == "金谷":
        str = pai.Kintama.messager(message)
        await channel.send(str)
