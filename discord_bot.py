@@ -106,6 +106,11 @@ async def on_message(message):
     channel = message.channel
     content = message.content
 
+    if content == "c//":
+        comand = content[idx+3:]  # スライスで半角空白文字のインデックス＋3以降を抽出
+        if channel.id == 986992160719130654:
+            character = ["神里","宵宮"]
+
     if content == "金谷":
        str = pai.Kintama.messager(message)
        await channel.send(str)
