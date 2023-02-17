@@ -1,7 +1,7 @@
 import discord
 import pai
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GpOlld.aLCLF-yX9yAGa0mPpPE7cGNa4wt_CPZrOkM7dU' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GtdLZw.lm5LbQJLzZ1SkqqlxmGveltOIOzxOocmEyFDQg' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
