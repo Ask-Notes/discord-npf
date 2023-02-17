@@ -1,7 +1,7 @@
 import discord
 import pai
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GgxbRA.Yzyxt-cOMaiAsUlJq-sx9dmOGClYZPgTqOUjLM' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GpOlld.aLCLF-yX9yAGa0mPpPE7cGNa4wt_CPZrOkM7dU' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
@@ -102,9 +102,9 @@ async def on_reaction_add(reaction, user):
         
 def selectuser(user):
    if 766190879127502858 == user:
-       return 1
+       return 0
    elif 607448697827229706 == user:
-       return 2
+       return 1
 
 
 @client.event
@@ -133,47 +133,50 @@ async def on_message(message):
         return float(m.content) and m.channel == channel
 
     #　原神ダメージ計算処理-------------------------------------------------------------------------------------------------------------------
-    if content.find("c//") and channel.id == 1075291090724323348:
-        comand = content[idx+3:]  # スライスで半角空白文字のインデックス＋3以降を抽出
-        if character[1] == comand:
-            await channel.send("神里のダメージ計算を開始します")
-            await channel.send("神里の攻撃力値を入力してください")
-            Selection = 1
-            menber = selectuser(user)
-            usermap[menber][Selection] = True
-        elif character[2] == comand:
-            await channel.send("宵宮のダメージ計算を開始します")
-            Selection = 2
-            menber = selectuser(user)
-            usermap[menber][Selection] = True
-        elif character[3] == comand:
-            await channel.send("胡桃のダメージ計算を開始します")
-            Selection = 3
-            menber = selectuser(user)
-            usermap[menber][Selection] = True
-    
+    if channel.id == 1075291090724323348:
+        if "c//" in content:
+           idx = content.find("c//")
+           comand = content[idx+3:]  # スライスで半角空白文字のインデックス＋3以降を抽出
+           if character[0] == comand:
+               await channel.send("神里のダメージ計算を開始します")
+               await channel.send("神里の攻撃力値を入力してください")
+               Selection = 1
+               menber = selectuser(user)
+               usermap[menber][Selection] = True
+           elif character[1] == comand:
+               await channel.send("宵宮のダメージ計算を開始します")
+               Selection = 2
+               menber = selectuser(user)
+               usermap[menber][Selection] = True
+           elif character[2] == comand:
+               await channel.send("胡桃のダメージ計算を開始します")
+               Selection = 3
+               menber = selectuser(user)
+               usermap[menber][Selection] = True
     #　原神ダメージ計算引継ぎロジック---------------------------------------------------------------------------------
-    if content.find(1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9)&channel.id == 1075291090724323348:
-        try:
-           content = float(content)
-           menber = selectuser
-           for continer in count:
-               if True == usermap[menber][continer]:
-                   if continer == 1:
-                       attack = content
-                       await channel.send("会心率値を入力してください")
-                       ct = await client.wait_for('message', check=check)
-                       await channel.send("会心ダメ値を入力してください")
-                       ctd = await client.wait_for('message', check=check)
-                       await channel.send("元素バフ値を入力してください")
-                       elementDmg = await client.wait_for('message', check=check)
-                       dmg = pai.dmg.ayaka(attack, ct, ctd, elementDmg)
-        except TypeError as e:
-            print(e)
-            await channel.send(e)
-
-        await channel.send("予想されるダメージは"+dmg+"です")
+        else:
+            try:
+               content = float(content)
+               menber = selectuser
+               for continer in count:
+                   if True == usermap[menber][continer-1]:
+                       if continer == 1:
+                           attack = content
+                           await channel.send("会心率値を入力してください")
+                           ct = await client.wait_for('message', check=check)
+                           await channel.send("会心ダメ値を入力してください")
+                           ctd = await client.wait_for('message', check=check)
+                           await channel.send("元素バフ値を入力してください")
+                           elementDmg = await client.wait_for('message', check=check)
+                           dmg = pai.dmg.ayaka(attack, ct, ctd, elementDmg)
+                           await channel.send("予想されるダメージは"+dmg+"です")
+                           usermap[menber][continer-1] = True
+                           break
+            except TypeError as e:
+                print(e)
+                await channel.send(e)   
             
+        
 
 
     #　お試し金谷君
