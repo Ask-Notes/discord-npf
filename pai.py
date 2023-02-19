@@ -10,8 +10,9 @@ class Kintama():
             return "消えろ"
         
 
-
+#ダメージ計算式
 class dmg():
+    # 神里綾華
     def ayaka(atk, ct, ctd, elementDmg):
         channel = atk.channel
         content = atk.content
