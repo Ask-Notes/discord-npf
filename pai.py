@@ -14,19 +14,31 @@ class Kintama():
 class dmg():
     # 神里綾華
     def ayaka(atk, ct, ctd, elementDmg):
-        channel = atk.channel
-        content = atk.content
+        print("ここは金玉")
+        atk =  change.changeFloat(atk)
+        ct =  change.changeFloat(ct)
+        ctd =  change.changeFloat(ctd)
+        elementDmg =  change.changeFloat(elementDmg)
+        print(atk)
+        print(ct)
+        print(ctd)
+        print(elementDmg)
+        ct = (ct/100)
+        ctd = (ctd/100)
+        kaisin = (1+(ct*ctd))
+        zokusei = (1+(elementDmg/100))
         tenpu = 1.09
-        if channel.id == 1075291090724323348:
-            dmg = (atk * tenpu)*(1+elementDmg)*(1+(ct*ctd))
-            return dmg
+        kougeki = (atk * tenpu)
+        dmg = kougeki * zokusei * kaisin
+        return str(dmg)
 
-# 型変換のクラス
+# 型変換のクラス2.757496,,,1.616,,,2552.78
 
 
 class change():
     # str → float
     def changeFloat(text):
+        print("ここは変換")
         print(type(text))
         num = float(text)
         return num
