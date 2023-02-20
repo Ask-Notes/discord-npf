@@ -8,10 +8,11 @@ class Kintama():
 
         if channel.id == 986992160719130654:
             return "消えろ"
-        
 
 
+# ダメージ計算式
 class dmg():
+    # 神里綾華
     def ayaka(atk, ct, ctd, elementDmg):
         channel = atk.channel
         content = atk.content
@@ -20,17 +21,16 @@ class dmg():
             dmg = (atk * tenpu)*(1+elementDmg)*(1+(ct*ctd))
             return dmg
 
-#型変換のクラス  
+# 型変換のクラス
+
+
 class change():
     # str → float
     def changeFloat(text):
-        print("おっぱい.py")
-        print(text)
         print(type(text))
         num = float(text)
-        print(type(num))
         return num
-    
+
     # str → int
     def changeInt(text):
         num = int(text)
