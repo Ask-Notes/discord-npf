@@ -1,7 +1,7 @@
 import discord
 import pai
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GtdLZw.lm5LbQJLzZ1SkqqlxmGveltOIOzxOocmEyFDQg' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.G9e0IH.dbzjjPwfJeovzqiSEQ5TjSdrPP0gSUvIX9SlwQ' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
@@ -123,6 +123,7 @@ async def on_message(message):
         True, True, True], [True, True, True], [True, True, True],
     menber = 0
     count = 3
+    continer = 0
     # 　二次元配列の定義はこんな感じ(usermap)
     #             "神里","宵宮","胡桃"etc......
     #             _____________________________
@@ -132,8 +133,14 @@ async def on_message(message):
     # 宇野ちゃん　｜_____|_____|_____|_____|____|
     # 吉田　　　　｜_____|_____|_____|_____|____|
     ###
-
+    def check2(m):
+        return m.channel == channel
+    
     def check(m):
+        try:
+            float(m.content)
+        except:
+            return 1 == m.author.id
         return float(m.content) and m.channel == channel
 
     # 　原神ダメージ計算処理-------------------------------------------------------------------------------------------------------------------
@@ -164,30 +171,35 @@ async def on_message(message):
             menberNum = pai.change.changeInt(menber)
             print(menberNum)
             print(type(menberNum))
-            try:  
-                for continer in count:
+            while continer != count:
+                try:
                     print("for文きた")
-                    if True == usermap[menberNum][continer-1]:
-                        print("その下のifきた")
+                    if True == usermap[menberNum][continer]:
                         if continer == 0:
-                            print("さらに下のif")
                             attack = contentFloat
                             print(attack)
                             await channel.send("会心率値を入力してください")
+                            await client.wait_for('message', check=check2)
                             ct = await client.wait_for('message', check=check)
+                            print("1mission")
                             await channel.send("会心ダメ値を入力してください")
+                            await client.wait_for('message', check=check2)
                             ctd = await client.wait_for('message', check=check)
+                            print("2mission")
                             await channel.send("元素バフ値を入力してください")
+                            await client.wait_for('message', check=check2)
                             elementDmg = await client.wait_for('message', check=check)
+                            print("3mission")
                             dmg = pai.dmg.ayaka(attack, ct, ctd, elementDmg)
                             await channel.send("予想されるダメージは"+dmg+"です")
-                            usermap[menberNum][continer-1] = False
+                            usermap[menberNum][continer] = False
                             break
-            except TypeError as e:
-                import traceback
-                print(e)
-                traceback.print_exc()
-                await channel.send(e)
+                except TypeError as e:
+                    import traceback
+                    print(e)
+                    traceback.print_exc()
+                    await channel.send(e)
+                continer += 1
 
     # 　お試し金谷君
     if content == "金谷":
