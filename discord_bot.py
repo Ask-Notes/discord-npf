@@ -1,7 +1,8 @@
 import discord
 import pai
+import pickle
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GpSSgs._DNZwvoY_VEL_RP_sLNrES7vR1xi3cdCt5Dwhk' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.Gnoi_D.JYL1x8mjZFaih_-14F_T0L6sG-Y7IvbZfacVxY' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
@@ -23,6 +24,17 @@ async def on_ready():
     print(guild.id)
     print(guild.name)
     print(guild.members)
+
+    f = open('list.txt', 'wb')
+    usermap = [False, False, False, False], [False, False, False, False], [
+        False, False, False, False], [False, False, False, False], [False, False, False, False],
+    pickle.dump(usermap, f)
+    f.close
+    f = open('value.txt', 'wb')
+    continer = 3
+    pickle.dump(continer,f)
+    f.close
+
 
 
 # チャンネル入退室時の通知処理------------------------------------------------------------------------
@@ -109,6 +121,8 @@ def selectuser(user):
         return 0
     elif 607448697827229706 == user:
         return 1
+    elif 798152271862824960 == user:
+        return 2
     else:
         return 50000
 
@@ -120,11 +134,14 @@ async def on_message(message):
     user = message.author.id
     Selection = 0
     character = ["神里", "宵宮", "胡桃"]
-    usermap = [True, True, True], [True, True, True], [
-        True, True, True], [True, True, True], [True, True, True],
+    f = open("./list.txt","rb")
+    usermap = pickle.load(f)
+    f.close
+    f = open("./value.txt","rb")
+    continer = pickle.load(f)
+    f.close
     menber = 0
     count = 3
-    continer = 0
     # 　二次元配列の定義はこんな感じ(usermap)
     #             "神里","宵宮","胡桃"etc......
     #             _____________________________
@@ -136,6 +153,18 @@ async def on_message(message):
     ###
 
     def check(m):
+        try:
+            float(m.content)
+        except:
+            return 1 == m.author.id
+        return float(m.content) and m.channel == channel
+    def check2(m):
+        try:
+            float(m.content)
+        except:
+            return 1 == m.author.id
+        return float(m.content) and m.channel == channel
+    def check3(m):
         try:
             float(m.content)
         except:
@@ -163,45 +192,62 @@ async def on_message(message):
                 Selection = 2
                 menber = selectuser(user)
                 usermap[menber][Selection] = True
+            f = open("./list.txt","wb")
+            pickle.dump(usermap, f)
+            f.close
+            continer = 0
+            f = open("./value.txt","wb")
+            pickle.dump(continer, f)
+            f.close
     # 　原神ダメージ計算引継ぎロジック---------------------------------------------------------------------------------
         elif (983632686612615188 != user):
+            print(continer)
             contentFloat = pai.change.changeFloat(content)
             menber = selectuser(user)
             menberNum = pai.change.changeInt(menber)
             while continer != count:
-                try:
-                    print("for文きた")
+                
+                print("for文きた")
+                print(usermap[menberNum][continer])
+                if True == usermap[menberNum][continer]:
+                    usermap[menberNum][continer] = False
                     print(usermap[menberNum][continer])
-                    if True == usermap[menberNum][continer]:
-                        usermap[menberNum][continer] = False
-                        print(usermap[menberNum][continer])
-                        if continer == 0:
-                            attack = contentFloat
-                            print("入ったぜ☆")
-                            print(attack)
-                            #　会心率の入力
-                            await channel.send("会心率値を入力してください")
-                            ct = await client.wait_for('message', check=check)
-                            print("見ようぜ")
-                            print("1mission"+ct.content)
-                            #　会心ダメの入力
-                            await channel.send("会心ダメ値を入力してください")
-                            ctd = await client.wait_for('message', check=check)
-                            print("2mission"+ctd.content)
-                            #　元素バフの入力
-                            await channel.send("元素バフ値を入力してください")
-                            elementDmg = await client.wait_for('message', check=check)
-                            print("3mission"+elementDmg.content)
-                            #　結果の出力
-                            dmg = pai.dmg.ayaka(attack, ct.content, ctd.content, elementDmg.content)
-                            await channel.send("予想されるダメージは"+dmg+"です")
-                            break
-                except TypeError as e:
+                    f = open("./list.txt","wb")
+                    pickle.dump(usermap, f)
+                    f.close
+                    break
+
+                continer += 1
+            try:    
+                if continer == 0:
+                        attack = contentFloat
+                        print("入ったぜ☆")
+                        print(attack)
+                        #　会心率の入力
+                        await channel.send("会心率値を入力してください")
+                        ct = await client.wait_for('message', check=check)
+                        print("見ようぜ")
+                        print("1mission"+ct.content)
+                        #　会心ダメの入力
+                        await channel.send("会心ダメ値を入力してください")
+                        ctd = await client.wait_for('message', check=check2)
+                        print("2mission"+ctd.content)
+                        #　元素バフの入力
+                        await channel.send("元素バフ値を入力してください")
+                        elementDmg = await client.wait_for('message', check=check3)
+                        print("3mission"+elementDmg.content)
+                        #　結果の出力
+                        dmg = pai.dmg.ayaka(attack, ct.content, ctd.content, elementDmg.content)
+                        await channel.send("予想されるダメージは"+dmg+"です")
+                        continer = 3
+                        f = open("./value.txt","wb")
+                        pickle.dump(continer, f)
+                        f.close
+            except TypeError as e:
                     import traceback
                     print(e)
                     traceback.print_exc()
                     await channel.send(e)
-                continer += 1
             
 
     # 　お試し金谷君

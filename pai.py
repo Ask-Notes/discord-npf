@@ -25,7 +25,7 @@ class dmg():
         print(elementDmg)
         ct = (ct/100)
         ctd = (ctd/100)
-        kaisin = (1+(ct*ctd))
+        kaisin = (1+(ctd*ct))
         zokusei = (1+(elementDmg/100))
         tenpu = 1.09
         kougeki = (atk * tenpu)
