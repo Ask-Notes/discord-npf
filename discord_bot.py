@@ -2,7 +2,7 @@ import discord
 import pai
 import pickle
 
-TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.Gnoi_D.JYL1x8mjZFaih_-14F_T0L6sG-Y7IvbZfacVxY' # TOKENを貼り付け
+TOKEN = 'OTgzNjMyNjg2NjEyNjE1MTg4.GN9eas.W-EQKCGcUXnL1IS_WR5Sfi5Qio2Onhchzcy4OM' # TOKENを貼り付け
 CHANNELID = 983734676365668432 # チャンネルIDを貼り付け
 GUILD = 964402354805940225
 client = discord.Client(intents=discord.Intents.all())
